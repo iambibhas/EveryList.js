@@ -18,7 +18,15 @@
 
     EveryList.prototype.init = function () {
         this.options.tag = this.element.tagName;
-        console.log(this.options);
+        list = this.getList(this.options.listName);
+        console.log(list);
+    };
+
+    EveryList.prototype.getList = function(name){
+        if(name == 'COUNTRY'){
+            // returning dummy list
+            return {1: 'India'};
+        }
     };
 
     $.fn[pluginName] = function ( options ) {
