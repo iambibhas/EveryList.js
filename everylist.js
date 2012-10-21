@@ -37,9 +37,17 @@
         }
         fileName += '.json';
         var listurl = "http://iambibhas.github.com/EveryList.js/lists/" + fileName + "?callback=?"
-        $.getJSON(listurl, function(data) {
-            console.log(pluginName + ': List found - ' + fileName);
-            console.log(data);
+        $.ajax({
+            url: listurl,
+            dataType: 'jsonp',
+            jsonpCallback: 'onelist',
+            success: function(data) {
+                console.log(pluginName + ': List found - ' + fileName);
+                console.log(data);
+            },
+            error: function(jqXHR, exception) {
+                console.log(exception);
+            }
         });
     }
 
