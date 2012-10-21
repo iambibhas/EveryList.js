@@ -18,6 +18,9 @@
 
     EveryList.prototype.init = function () {
         this.options.tag = this.element.tagName;
+        if(!this.options.hasOwnProperty('listName')){
+            return this.errorOnMissingParameter('listName');
+        }
         list = this.getList(this.options.listName);
         console.log(list);
     };
@@ -25,7 +28,18 @@
     EveryList.prototype.getList = function(name){
         if(name == 'COUNTRY'){
             // returning dummy list
-            return {1: 'India'};
+            return {};
+        }
+    };
+
+    EveryList.prototype.readFile = function(fileName){
+
+    }
+
+    EveryList.prototype.errorOnMissingParameter = function(paramName){
+        if(paramName != undefined){
+            console.log(pluginName + ': Must provide property - ' + paramName);
+            return false;
         }
     };
 
