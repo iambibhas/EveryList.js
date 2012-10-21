@@ -25,10 +25,7 @@
     };
 
     EveryList.prototype.getList = function(name){
-        if(name == 'COUNTRY'){
-            // returning dummy list
-            this.readFile(name);
-        }
+        this.readFile(name);
     };
 
     EveryList.prototype.readFile = function(fileName){
@@ -46,7 +43,13 @@
                 console.log(data);
             },
             error: function(jqXHR, exception) {
-                console.log(exception);
+                console.log(pluginName + ': List not found - ' + fileName + '(' + exception + ')');
+            },
+            statusCode: {
+                404: function(jqXHR, exception) {
+                    console.log(pluginName + ': List not found - ' + fileName);
+                    console.log(exception);
+                }
             }
         });
     }
