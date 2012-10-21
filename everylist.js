@@ -35,7 +35,7 @@
         if(fileName == undefined || fileName == ""){
             return this.errorOnMissingParameter('readFile', 'fileName');
         }
-
+        fileName += '.json';
         var listurl = "http://iambibhas.github.com/EveryList.js/lists/" + fileName + "?callback=?"
         $.getJSON(listurl, function(data) {
             console.log(pluginName + ': List found - ' + fileName);
