@@ -28,11 +28,16 @@
         this.readFile(name);
     };
 
+    EveryList.prototype.setvalues = function(list) {
+        console.log(list);
+        console.log(this.element);
+    }
+
     EveryList.prototype.readFile = function(fileName){
         if(fileName == undefined || fileName == ""){
             return this.errorOnMissingParameter('readFile', 'fileName');
         }
-        fileName += '.json';
+        fileName += '.csv';
         var listurl = "http://iambibhas.github.com/EveryList.js/lists/" + fileName + "?callback=?"
         $.ajax({
             url: listurl,
@@ -40,7 +45,7 @@
             jsonpCallback: 'onelist',
             success: function(data) {
                 console.log(pluginName + ': List found - ' + fileName);
-                console.log(data);
+                EveryList.prototype.setvalues(data);
             },
             error: function(jqXHR, exception) {
                 console.log(pluginName + ': List not found - ' + fileName + '(' + exception + ')');
