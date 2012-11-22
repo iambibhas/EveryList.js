@@ -3,7 +3,8 @@
     var pluginName = 'EveryList',
         document = window.document,
         defaults = {
-            tag: "SELECT"
+            tagName: "SELECT",
+            remote_host: "http://localhost/everylist"
         };
 
     function EveryList( element, options ) {
@@ -17,7 +18,7 @@
     }
 
     EveryList.prototype.init = function () {
-        this.options.tag = this.element.tagName;
+        this.options.tagName = this.element.tagName;
         if(!this.options.hasOwnProperty('listName')){
             return this.errorOnMissingParameter('init', 'listName');
         }
@@ -28,24 +29,43 @@
         this.readFile(name);
     };
 
-    EveryList.prototype.setvalues = function(list) {
-        console.log(list);
-        console.log(this.element);
-    }
+    EveryList.prototype.setValues = function(str_list) {
+        console.log(this.options);
+        switch(this.options.tagName) {
+            case 'UL':
+                console.log(this.element);
+                list = str_list.split('\n');
+                for(var i=0; i<list.length; i++){
+                    console.log(list[i]);
+                    el = [];
+                    list[i] = list[i].split(',');
+                    
+                    el.push(list[i].pop());
+                    el.push(list[i].toString());
+                    list[i] = el;
+                    
+                    subel = $('<li/>', {
+                        text: list[i][1],
+                        alt: list[i][0]
+                    });
+                    subel.appendTo(this.element);
+                }
+                break;
+        }
+    };
 
     EveryList.prototype.readFile = function(fileName){
         if(fileName == undefined || fileName == ""){
             return this.errorOnMissingParameter('readFile', 'fileName');
         }
         fileName += '.csv';
-        var listurl = "http://iambibhas.github.com/EveryList.js/lists/" + fileName + "?callback=?"
+        var listurl = this.options.remote_host + "/lists/" + fileName;
+        var current_obj = this;
         $.ajax({
             url: listurl,
-            dataType: 'jsonp',
-            jsonpCallback: 'onelist',
             success: function(data) {
                 console.log(pluginName + ': List found - ' + fileName);
-                EveryList.prototype.setvalues(data);
+                current_obj.setValues(data);
             },
             error: function(jqXHR, exception) {
                 console.log(pluginName + ': List not found - ' + fileName + '(' + exception + ')');
